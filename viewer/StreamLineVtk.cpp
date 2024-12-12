@@ -26,14 +26,10 @@ namespace vispro
         mPointSource(nullptr),
         mSliderValue(0),
         mData(nullptr) // Initialize to null
-    {
-    }
+    {}
 
     StreamLineVtk::~StreamLineVtk()
     {}
-
-
-
 
     void StreamLineVtk::CreateWidget(QWidget* widget)
     {
@@ -43,7 +39,6 @@ namespace vispro
         QString qss = QString("background-color: %1").arg(col.name());
         colorButton->setStyleSheet(qss);
         connect(colorButton, &QPushButton::released, this, &StreamLineVtk::PickColor);
-
 
         // Slider for subtraction value
         QSlider* subtractionSlider = new QSlider(Qt::Horizontal);
@@ -57,8 +52,8 @@ namespace vispro
             });
 
         QFormLayout* layout = new QFormLayout;
-        layout->addRow(new QLabel(tr("Streamline Color:")), colorButton);
-        layout->addRow(new QLabel(tr("Adjust Subtraction Value:")), subtractionSlider);
+        layout->addRow(new QLabel(tr("Color:")), colorButton);
+        layout->addRow(new QLabel(tr("Value:")), subtractionSlider);
         widget->setLayout(layout);
     }
 
@@ -69,15 +64,8 @@ namespace vispro
         emit RequestRender(); // Request an update to the render
     }
 
-
- 
-
     vtkSmartPointer<vtkProp> StreamLineVtk::CreateActor()
     {
-        /*mCubeSource = vtkSmartPointer<vtkCubeSource>::New();
-        mCubeSource->SetCenter(3.0, 3.0, 3.0);
-        mCubeSource->SetBounds(0.0 xMin, 6.0 xMax, 0.0 yMin, 6.0 yMax, 0.0 zMin, 6.0 zMax);*/
-        
         mPointSource = vtkSmartPointer<vtkPointSource>::New();
         mPointSource->SetCenter(0.0, 0.0, 0.0);
         mPointSource->SetRadius(2);
@@ -92,12 +80,10 @@ namespace vispro
         mStreamlineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
         mStreamlineMapper->SetInputConnection(mStreamTracer->GetOutputPort());
 
-
         vtkNew<vtkActor> actor;
         actor->SetMapper(mStreamlineMapper);
-        actor->GetProperty()->SetColor(0.5, 0.5, 0.5);     // initial color
+        actor->GetProperty()->SetColor(0.1, 0.7, 0.7);
         return actor;
-
     }
 
     void StreamLineVtk::SetData(Data* data)
@@ -152,17 +138,14 @@ namespace vispro
             }
         }
 
-
-        
         mStreamTracer->SetInputData(field);
         mStreamTracer->Update();
 
-        field->Print(std::cout);
-        velocityData->Print(std::cout);
+        //field->Print(std::cout);
+        //velocityData->Print(std::cout);
 
         //mStreamTracer->GetOutput()->Print(std::cout);
-
-        // mStreamlineActor->GetProperty()->SetColor(0.0, 1.0, 0.0);
+        //mStreamlineActor->GetProperty()->SetColor(0.0, 1.0, 0.0);
         emit RequestRender();
     }
 
