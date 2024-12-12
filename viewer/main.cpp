@@ -13,9 +13,11 @@ int main(int argc, char* argv[])
 {
 	AllocConsole();
 	freopen("conin$", "r", stdin);
+
 	freopen("conout$", "w", stdout);
+	
 	freopen("conout$", "w", stderr);
-	printf("Debugging Window:\n");
+	printf("Window:\n");
 
 	if (argc < 2) {
 		// Pass the data base path to the data as command line argument!
