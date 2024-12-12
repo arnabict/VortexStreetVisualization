@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	freopen("conout$", "w", stdout);
 	
 	freopen("conout$", "w", stderr);
-	printf("Window:\n");
+	printf("Debugging Window:\n");
 
 	if (argc < 2) {
 		// Pass the data base path to the data as command line argument!
