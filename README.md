@@ -62,11 +62,11 @@ The following steps are for Visual Studio. For other IDEs the procedure is proba
 
 
 ### Cloning the Repository
-Before you are able to clone your exercise repository, you need to have an active [gitlab@FAU](https://gitlab.cs.fau.de/) account. Then you can [fork](https://docs.gitlab.com/ee/gitlab-basics/fork-project.html) this project to create your own private online repository.
+Before you can clone your exercise repository, you need to have an active github account. Then you can fork this project to create your own private online repository.
 
 In the next step you need to clone it to your local hard drive:
 ```
-git clone git@gitlab.cs.fau.de:'Your_Git_Username'/vispro-ss23.git
+git clone 'Your_Git_Username'/vispro-ss23.git
 ```
 'Your_Git_Username' needs to be replaced accordingly. Cloning recursively will download the Eigen library, as well.
 
