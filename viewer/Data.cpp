@@ -74,8 +74,7 @@ namespace vispro
 	}
 
 	Data::~Data()
-	{
-	}
+	{}
 	
 	void Data::SetTime(int time) 
 	{
@@ -111,7 +110,8 @@ namespace vispro
 		}
 		if (mParticleEnabled) {
 			char filename[256];
-			sprintf(filename, "halfcylinder-particles-%.2f.vtp", time * 0.1);
+			//sprintf(filename, "halfcylinder-particles-%.2f.vtp", time * 0.1);
+			sprintf(filename, "halfcylinder-streaklines-%.2f.vtp", time * 0.1);
 			mParticleData->SetFileName((mBasePath + filename).c_str());
 			mParticleData->Update();
 		}

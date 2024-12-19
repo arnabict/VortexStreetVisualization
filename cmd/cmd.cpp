@@ -5,10 +5,11 @@
 #include "Velocity.hpp"
 #include "Vorticity.hpp"
 #include "Particles.hpp"
+#include "Streaklines.hpp"
 #include "LIC.hpp"
 #include "FTLE.hpp"
 
-static const int num_time_steps = 100;
+static const int num_time_steps = 151;
 
 void ComputeVelocity(const std::string& basePath) {
 	// for each time step
@@ -53,6 +54,13 @@ void ComputeParticles(const std::string& basePath) {
 		20);
 }
 
+void ComputeStreaklines(const std::string& basePath) {
+	Eigen::AlignedBox3d seeds(Eigen::Vector3d(-0.5, -0.5, -0.5), Eigen::Vector3d(0.5, 0.5, 0.5));
+	vispro::Streaklines::Compute(basePath.c_str(), seeds,
+		0.05,
+		20);
+}
+
 void ComputeLIC(const std::string& basePath) {
 	// for each time step
 	for (int time = 0; time < num_time_steps; ++time) {
@@ -90,10 +98,11 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	ComputeVelocity(argv[1]);
+	/*ComputeVelocity(argv[1]);
 	ComputeMagnitude(argv[1]);
 	ComputeVorticity(argv[1]);
-	ComputeParticles(argv[1]);
+	ComputeParticles(argv[1]);*/
+	ComputeStreaklines(argv[1]);
 	//ComputeLIC(argv[1]);
 	//ComputeFTLE(argv[1]);
 

@@ -35,7 +35,11 @@ namespace vispro
 
 			// add new particles
 			for (int ip = 0; ip < particlesReleasedPerTimeStep; ++ip) {
-				particles.push_back(clampedSeedBox.sample());
+				double minz = clampedSeedBox.min().z();
+				double maxz = clampedSeedBox.max().z();
+				double t = (double)ip / particlesReleasedPerTimeStep;
+				Eigen::Vector3d seed(-0.1, 0.1, minz + (maxz - minz) * t);
+				particles.push_back(seed);
 				indomain.push_back(1);
 			}
 

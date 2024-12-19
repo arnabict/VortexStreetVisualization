@@ -55,7 +55,10 @@ namespace vispro
         mGlyphs->SetSourceConnection(mSphereSource->GetOutputPort());
 
         mPolyDataMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        mPolyDataMapper->SetInputConnection(mGlyphs->GetOutputPort());
+        //mPolyDataMapper->SetInputConnection(mGlyphs->GetOutputPort());
+        mPolyDataMapper->SetInputData(mGlyphs->GetOutput());
+        mPolyDataMapper->Update();
+
 
         vtkNew<vtkActor> actor;
         actor->SetMapper(mPolyDataMapper);
@@ -67,8 +70,10 @@ namespace vispro
     {
         vtkPolyData* pointData = data->GetParticles();
         if (pointData == nullptr) return;
-        mGlyphs->SetInputData(pointData);
-        mGlyphs->Update();
+        /*mGlyphs->SetInputData(pointData);
+        mGlyphs->Update();*/
+        mPolyDataMapper->SetInputData(pointData);
+        mPolyDataMapper ->Update();
     }
 
     void Particles::PickColor()
