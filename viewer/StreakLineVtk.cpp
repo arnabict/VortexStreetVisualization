@@ -94,7 +94,7 @@ namespace vispro
         mData = data;
 
         vtkImageData* velocityData = data->GetField(Data::EField::Velocity);
-     
+
         if (velocityData == nullptr) {
             std::cerr << "Error: Velocity data is null." << std::endl;
             return;
