@@ -60,6 +60,7 @@ namespace vispro
 					double spacing_y = (iy1 - iy0) * velocityImage->GetSpacing()[1];
 					double spacing_z = (iz1 - iz0) * velocityImage->GetSpacing()[2];
 
+					// Jacobian
 					Eigen::Vector3d dv_dx = (vel_x1 - vel_x0) / spacing_x;
 					Eigen::Vector3d dv_dy = (vel_y1 - vel_y0) / spacing_y;
 					Eigen::Vector3d dv_dz = (vel_z1 - vel_z0) / spacing_z;

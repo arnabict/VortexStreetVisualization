@@ -5,7 +5,6 @@
 
 class vtkStreamTracer;
 class vtkPointSource;
-//class vtkCubeSource;
 class vtkPolyDataMapper;
 class vtkActor;
 
@@ -53,10 +52,10 @@ namespace vispro
         vtkSmartPointer<vtkPolyDataMapper> mStreamlineMapper;
         // Actor for the streamlines.
         
-        //vtkSmartPointer<vtkActor> mStreamlineActor;
+        // vtkSmartPointer<vtkActor> mStreamlineActor;
         // Seed points for the streamlines.
         vtkSmartPointer<vtkPointSource> mPointSource;
         // Cube source for the streamlines.
-        //vtkSmartPointer<vtkCubeSource> mCubeSource;
+        // vtkSmartPointer<vtkCubeSource> mCubeSource;
     };
 }

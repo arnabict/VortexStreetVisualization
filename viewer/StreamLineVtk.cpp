@@ -40,20 +40,25 @@ namespace vispro
         colorButton->setStyleSheet(qss);
         connect(colorButton, &QPushButton::released, this, &StreamLineVtk::PickColor);
 
+        // Label to show the slider value
+        QLabel* valueLabel = new QLabel(QString::number(mSliderValue, 'f', 2));
+
         // Slider for subtraction value
         QSlider* subtractionSlider = new QSlider(Qt::Horizontal);
         subtractionSlider->setRange(0, 100);  // Range for 0.0 to 1.0 with 0.01 increments
         subtractionSlider->setSingleStep(1); // 0.01 step size
         subtractionSlider->setValue(static_cast<int>(mSliderValue * 100)); // Default value scaled to slider range
 
-        connect(subtractionSlider, &QSlider::valueChanged, this, [this](int value) {
+        connect(subtractionSlider, &QSlider::valueChanged, this, [this, valueLabel](int value) {
             double subtractionValue = static_cast<double>(value) / 100.0; // Scale to double
             AdjustStreamlineProperty(subtractionValue);
+            valueLabel->setText(QString::number(subtractionValue, 'f', 2));
             });
 
         QFormLayout* layout = new QFormLayout;
         layout->addRow(new QLabel(tr("Color:")), colorButton);
-        layout->addRow(new QLabel(tr("Value:")), subtractionSlider);
+        layout->addRow(new QLabel(tr("Change Value:")), subtractionSlider);
+        layout->addRow(new QLabel(tr("Subtraction:")), valueLabel);
         widget->setLayout(layout);
     }
 
@@ -82,7 +87,7 @@ namespace vispro
 
         vtkNew<vtkActor> actor;
         actor->SetMapper(mStreamlineMapper);
-        actor->GetProperty()->SetColor(0.1, 0.7, 0.7);
+        actor->GetProperty()->SetColor(0.1, 0.8, 0.8);
         return actor;
     }
 

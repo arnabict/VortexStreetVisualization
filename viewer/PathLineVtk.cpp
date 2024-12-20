@@ -13,6 +13,7 @@
 #include <qslider.h>
 #include <iostream>
 #include <vtkFloatArray.h>
+#include <QtWidgets>
 
 namespace vispro {
 
@@ -27,8 +28,15 @@ namespace vispro {
     PathLineVtk::~PathLineVtk() {}
 
     void PathLineVtk::CreateWidget(QWidget* widget) {
+        QPushButton* colorButton = new QPushButton;
+        double* color = vtkActor::SafeDownCast(mActor)->GetProperty()->GetColor();
+        QColor col = QColor::fromRgbF(color[0], color[1], color[2]);
+        QString qss = QString("background-color: %1").arg(col.name());
+        colorButton->setStyleSheet(qss);
+        connect(colorButton, &QPushButton::released, this, &PathLineVtk::PickColor);
+
         QFormLayout* layout = new QFormLayout;
-        layout->addRow(new QLabel(tr("Pathline Visualization")));
+        layout->addRow(new QLabel(tr("Color:")), colorButton);
         widget->setLayout(layout);
     }
 
@@ -52,7 +60,7 @@ namespace vispro {
 
         vtkNew<vtkActor> actor;
         actor->SetMapper(mPathlineMapper);
-        actor->GetProperty()->SetColor(0.0, 0.0, 1.0); // Blue pathlines.
+        actor->GetProperty()->SetColor(0.3, 0.3, 0.8); // Blue pathlines.
         return actor;
     }
 
@@ -89,11 +97,25 @@ namespace vispro {
             vtkDataArray* velocityStepArray = timeStepData->GetPointData()->GetVectors();
             for (vtkIdType i = 0; i < velocityStepArray->GetNumberOfTuples(); ++i) {
                 double* vec = velocityArrayFloat->GetTuple3(i);
-                velocityStepArray->SetTuple3(i, vec[0], vec[1] + t * 0.1, vec[2]); // Simulate temporal variation.
+                velocityStepArray->SetTuple3(i, vec[0], vec[1] + t * 0.1, vec[2]);
             }
 
             mStreamTracer->SetInputData(timeStepData);
             mStreamTracer->Update();
+        }
+    }
+
+    void PathLineVtk::PickColor()
+    {
+        double* color = vtkActor::SafeDownCast(mActor)->GetProperty()->GetColor();
+        QColor col = QColorDialog::getColor(QColor::fromRgbF(color[0], color[1], color[2]));
+        if (col.isValid())
+        {
+            QString qss = QString("background-color: %1").arg(col.name());
+            QPushButton* button = dynamic_cast<QPushButton*>(sender());
+            button->setStyleSheet(qss);
+            vtkActor::SafeDownCast(mActor)->GetProperty()->SetColor(col.redF(), col.greenF(), col.blueF());
+            emit RequestRender();
         }
     }
 

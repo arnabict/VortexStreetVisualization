@@ -28,6 +28,9 @@ namespace vispro {
         // Set data for the component.
         virtual void SetData(Data* data) override;
 
+    private slots:
+        void PickColor();
+
     private:
         void UpdatePathlinePipeline();
 

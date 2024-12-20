@@ -15,7 +15,6 @@
 #include "VolrenShader.hpp"
 #include "StreamLineVtk.hpp"
 #include "PathLineVtk.hpp"
-#include <StreakLineVtk.hpp>
 
 namespace vispro
 {
@@ -96,7 +95,6 @@ namespace vispro
 		mComponents.push_back(std::make_unique<IsosurfaceVtk>());
 		mComponents.push_back(std::make_unique<StreamLineVtk>());
 		mComponents.push_back(std::make_unique<PathLineVtk>());
-		mComponents.push_back(std::make_unique<StreakLineVtk>());
 		mComponents.push_back(std::make_unique<VolrenVtk>());
 		mComponents.push_back(std::make_unique<ImageSlice>());
 		mComponents.push_back(std::make_unique<Particles>());
@@ -137,7 +135,7 @@ namespace vispro
 		QString message = tr("Example message.");
 		statusBar()->showMessage(message);
 
-		setWindowTitle(tr("Interactive Visualization Project"));
+		setWindowTitle(tr("Vortex Street Visualization"));
 		setMinimumSize(800, 600);
 		showMaximized();
 
