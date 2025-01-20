@@ -20,6 +20,7 @@ namespace vispro
 		enum class EField {
 			Velocity,
 			Magnitude,
+			FeatureFlow,
 			Vorticity,
 			LIC,
 			FTLE

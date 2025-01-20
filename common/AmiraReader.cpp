@@ -102,6 +102,7 @@ namespace vispro
 			(bounds.max()[0] - bounds.min()[0]) / (resolution[0] - 1.),
 			(bounds.max()[1] - bounds.min()[1]) / (resolution[1] - 1.),
 			(bounds.max()[2] - bounds.min()[2]) / (resolution[2] - 1.));
+		fclose(fp);
 		return true;
 	}
 

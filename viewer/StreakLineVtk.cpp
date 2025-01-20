@@ -1,4 +1,4 @@
-#include "Particles.hpp"
+#include "StreakLineVtk.hpp"
 #include "Data.hpp"
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
@@ -17,13 +17,13 @@
 
 namespace vispro
 {
-    Particles::Particles() :
-        Component("Particles"),
+    StreakLineVtk::StreakLineVtk() :
+        Component("StreakLineVtk"),
         mPolyDataMapper(NULL), mGlyphs(NULL), mSphereSource(NULL)
     {}
-    Particles::~Particles() {}
+    StreakLineVtk::~StreakLineVtk() {}
 
-    void Particles::CreateWidget(QWidget* widget)
+    void StreakLineVtk::CreateWidget(QWidget* widget)
     {
         // create button and a color dialog
         QPushButton* colorButton = new QPushButton;
@@ -31,22 +31,22 @@ namespace vispro
         QColor col = QColor::fromRgbF(color[0], color[1], color[2]);
         QString qss = QString("background-color: %1").arg(col.name());
         colorButton->setStyleSheet(qss);
-        connect(colorButton, &QPushButton::released, this, &Particles::PickColor);
+        connect(colorButton, &QPushButton::released, this, &StreakLineVtk::PickColor);
 
         // create slider for setting the radius of the spheres
-        QDoubleSlider* radiusSlider = new QDoubleSlider;
-        radiusSlider->setMinimum(0);                               // minimal value on slider
-        radiusSlider->setMaximum(0.1 * radiusSlider->intScaleFactor()); // maximal value on slider
-        radiusSlider->setDoubleValue(mSphereSource->GetRadius());
-        connect(radiusSlider, &QDoubleSlider::doubleValueChanged, this, &Particles::SetRadius);
+        //QDoubleSlider* radiusSlider = new QDoubleSlider;
+        //radiusSlider->setMinimum(0);                               // minimal value on slider
+        //radiusSlider->setMaximum(0.1 * radiusSlider->intScaleFactor()); // maximal value on slider
+        //radiusSlider->setDoubleValue(mSphereSource->GetRadius());
+        //connect(radiusSlider, &QDoubleSlider::doubleValueChanged, this, &StreakLineVtk::SetRadius);
 
         QFormLayout* layout = new QFormLayout;
         layout->addRow(new QLabel(tr("Color:")), colorButton);
-        layout->addRow(new QLabel(tr("Radius:")), radiusSlider);
+        //layout->addRow(new QLabel(tr("Radius:")), radiusSlider);
         widget->setLayout(layout);
     }
 
-    vtkSmartPointer<vtkProp> Particles::CreateActor()
+    vtkSmartPointer<vtkProp> StreakLineVtk::CreateActor()
     {
         mSphereSource = vtkSmartPointer<vtkSphereSource>::New();
         mSphereSource->SetRadius(0.02);
@@ -55,23 +55,29 @@ namespace vispro
         mGlyphs->SetSourceConnection(mSphereSource->GetOutputPort());
 
         mPolyDataMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        mPolyDataMapper->SetInputConnection(mGlyphs->GetOutputPort());
+        //mPolyDataMapper->SetInputConnection(mGlyphs->GetOutputPort());
+        mPolyDataMapper->SetInputData(mGlyphs->GetOutput());
+        mPolyDataMapper->Update();
+
 
         vtkNew<vtkActor> actor;
         actor->SetMapper(mPolyDataMapper);
-        actor->GetProperty()->SetColor(0.78431372549, 0.0, 0.0);     // initial color
+        actor->GetProperty()->SetOpacity(0.5);
+        actor->GetProperty()->SetColor(0.66666666666, 1.0, 0.49803921568);     // initial color
         return actor;
     }
 
-    void Particles::SetData(Data* data)
+    void StreakLineVtk::SetData(Data* data)
     {
         vtkPolyData* pointData = data->GetParticles();
         if (pointData == nullptr) return;
-        mGlyphs->SetInputData(pointData);
-        mGlyphs->Update();
+        /*mGlyphs->SetInputData(pointData);
+        mGlyphs->Update();*/
+        mPolyDataMapper->SetInputData(pointData);
+        mPolyDataMapper ->Update();
     }
 
-    void Particles::PickColor()
+    void StreakLineVtk::PickColor()
     {
         double* color = vtkActor::SafeDownCast(mActor)->GetProperty()->GetColor();
         QColor col = QColorDialog::getColor(QColor::fromRgbF(color[0], color[1], color[2]));
@@ -85,10 +91,10 @@ namespace vispro
         }
     }
 
-    void Particles::SetRadius(double radius)
+    /*void StreakLineVtk::SetRadius(double radius)
     {
         mSphereSource->SetRadius(radius);
         mSphereSource->Update();
         emit RequestRender();
-    }
+    }*/
 }

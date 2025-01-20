@@ -12,6 +12,7 @@
 #include "VolrenVtk.hpp"
 #include "ImageSlice.hpp"
 #include "Particles.hpp"
+#include "StreakLineVtk.hpp"
 #include "VolrenShader.hpp"
 #include "StreamLineVtk.hpp"
 #include "PathLineVtk.hpp"
@@ -93,12 +94,13 @@ namespace vispro
 		// Add all visualization components here!
 		mComponents.push_back(std::make_unique<BoundingBox>());
 		mComponents.push_back(std::make_unique<IsosurfaceVtk>());
-		mComponents.push_back(std::make_unique<StreamLineVtk>());
 		mComponents.push_back(std::make_unique<PathLineVtk>());
-		mComponents.push_back(std::make_unique<VolrenVtk>());
-		mComponents.push_back(std::make_unique<ImageSlice>());
+		mComponents.push_back(std::make_unique<StreamLineVtk>());
+		mComponents.push_back(std::make_unique<StreakLineVtk>());
 		mComponents.push_back(std::make_unique<Particles>());
-		mComponents.push_back(std::make_unique<VolrenShader>());
+		mComponents.push_back(std::make_unique<VolrenVtk>());
+		//mComponents.push_back(std::make_unique<VolrenShader>());
+		//mComponents.push_back(std::make_unique<ImageSlice>());
 	}
 
 	void MainWindow::CreateUI()
@@ -132,8 +134,8 @@ namespace vispro
 		verticalLayout->addWidget(horizontalSplitter);
 		verticalLayout->addWidget(mData->GetTimeSliderWidget());
 
-		QString message = tr("Example message.");
-		statusBar()->showMessage(message);
+		/*QString message = tr("Example message.");
+		statusBar()->showMessage(message);*/
 
 		setWindowTitle(tr("Vortex Street Visualization"));
 		setMinimumSize(800, 600);

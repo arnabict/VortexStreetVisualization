@@ -9,14 +9,14 @@ class vtkPolyDataMapper;
 namespace vispro
 {
 	// Displays a set of particles using spheres.
-	class Particles : public Component
+	class StreakLineVtk : public Component
 	{
 		Q_OBJECT
 	public:
 		// Default constructor.
-		Particles();
+		StreakLineVtk();
 		// Destructor.
-		virtual ~Particles();
+		virtual ~StreakLineVtk();
 
 	protected:
 		// Function to create the widget in.
@@ -32,11 +32,11 @@ namespace vispro
 		// Opens the color picker.
 		void PickColor();
 		// Sets an radius of the spheres.
-		void SetRadius(double radius);
+		//void SetRadius(double radius);
 
 	private:
 		// Copy-constructor is deleted.
-		Particles(const Particles& other) = delete;
+		StreakLineVtk(const StreakLineVtk& other) = delete;
 
 		// Source for creating spheres.
 		vtkSmartPointer<vtkSphereSource> mSphereSource;

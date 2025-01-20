@@ -45,14 +45,14 @@ namespace vispro {
         mPointSource = vtkSmartPointer<vtkPointSource>::New();
         mPointSource->SetCenter(0.0, 0.0, 0.0);
         mPointSource->SetRadius(2.0);
-        mPointSource->SetNumberOfPoints(100);
+        mPointSource->SetNumberOfPoints(500);
 
         // Stream tracer for pathlines.
         mStreamTracer = vtkSmartPointer<vtkStreamTracer>::New();
         mStreamTracer->SetSourceConnection(mPointSource->GetOutputPort());
-        mStreamTracer->SetIntegrationDirectionToForward();
-        mStreamTracer->SetMaximumPropagation(1000);
-        mStreamTracer->SetMaximumNumberOfSteps(500);
+        mStreamTracer->SetIntegrationDirectionToBoth();
+        mStreamTracer->SetMaximumPropagation(3000);
+        mStreamTracer->SetMaximumNumberOfSteps(2000);
 
         // Mapper for pathlines.
         mPathlineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();

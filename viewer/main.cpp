@@ -1,7 +1,6 @@
 #include <qapplication.h>
 #include "MainWindow.hpp"
 #include <Windows.h>
-
 #ifdef __APPLE__
 #include <QApplication>
 #include <QGLFormat>

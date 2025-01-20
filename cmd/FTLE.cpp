@@ -29,6 +29,14 @@ namespace vispro
 		mArray->SetName("ftle");
 		ftle->GetPointData()->AddArray(mArray);
 
+		if (mArray->GetNumberOfTuples() != numPoints) {
+			std::cerr << "Expected: " << numPoints << "Found: " << mArray->GetNumberOfTuples();
+			return;
+		}
+		else {
+			std::cout << numPoints;
+		}
+
 		// create the seed points on a regular grid
 		std::vector<Eigen::Vector3d> particles(numPoints);
 		std::vector<int> inDomain(numPoints, 1);

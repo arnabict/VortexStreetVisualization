@@ -23,6 +23,7 @@ namespace vispro
 		mParticleData = vtkSmartPointer<vtkXMLPolyDataReader>::New();
 
 		mFieldEnabled[(int)EField::Velocity] = true;
+		mFieldEnabled[(int)EField::FeatureFlow] = true;
 		//mFieldEnabled[(int)EField::Magnitude] = true;
 		mFieldEnabled[(int)EField::Vorticity] = true;
 		//mFieldEnabled[(int)EField::LIC] = true;
@@ -47,9 +48,10 @@ namespace vispro
 		std::string fieldNames[NumFields];
 		fieldNames[(int)EField::Velocity] = "Velocity";
 		fieldNames[(int)EField::Magnitude] = "Magnitude";
+		fieldNames[(int)EField::FeatureFlow] = "Feature Flow";
 		fieldNames[(int)EField::Vorticity] = "Vorticity";
-		fieldNames[(int)EField::LIC] = "LIC";
-		fieldNames[(int)EField::FTLE] = "FTLE";
+		//fieldNames[(int)EField::LIC] = "LIC";
+		//fieldNames[(int)EField::FTLE] = "FTLE";
 
 		// create the data field options UI
 		QGroupBox* groupBox = new QGroupBox("Data");
@@ -91,6 +93,9 @@ namespace vispro
 				case (int)EField::Vorticity:
 					sprintf(filename, "halfcylinder-vorticity-%.2f.am", time * 0.1);
 					break;
+				case (int)EField::FeatureFlow:
+					sprintf(filename, "halfcylinder-featureflow-%.2f.am", time * 0.1);
+					break;
 				case (int)EField::LIC:
 					sprintf(filename, "halfcylinder-lic-%.2f.am", time * 0.1);
 					break;
@@ -107,6 +112,13 @@ namespace vispro
 						mBounds[i] = result->GetBounds()[i];
 				}
 			}
+		}
+		if (mParticleEnabled) {
+			char filename[256];
+			sprintf(filename, "halfcylinder-particles-%.2f.vtp", time * 0.1);
+			//sprintf(filename, "halfcylinder-streaklines-%.2f.vtp", time * 0.1);
+			mParticleData->SetFileName((mBasePath + filename).c_str());
+			mParticleData->Update();
 		}
 		if (mParticleEnabled) {
 			char filename[256];

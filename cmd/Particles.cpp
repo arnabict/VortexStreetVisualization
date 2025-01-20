@@ -16,7 +16,7 @@ namespace vispro
 
 		std::vector<Eigen::Vector3d> particles;
 		std::vector<int> indomain;
-		for (int iTime = 0; iTime < desc.NumTimeSteps; ++iTime) 
+		for (int iTime = 0; iTime < desc.NumTimeSteps; ++iTime)
 		{
 			// physical time for this time step
 			float startTime = desc.StartTime + iTime * desc.TemporalSpacing;
@@ -35,11 +35,7 @@ namespace vispro
 
 			// add new particles
 			for (int ip = 0; ip < particlesReleasedPerTimeStep; ++ip) {
-				double minz = clampedSeedBox.min().z();
-				double maxz = clampedSeedBox.max().z();
-				double t = (double)ip / particlesReleasedPerTimeStep;
-				Eigen::Vector3d seed(-0.1, 0.1, minz + (maxz - minz) * t);
-				particles.push_back(seed);
+				particles.push_back(clampedSeedBox.sample());
 				indomain.push_back(1);
 			}
 

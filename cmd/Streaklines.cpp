@@ -84,7 +84,8 @@ namespace vispro
 			//polyData->SetVerts(cellArray);
 			char filename[256];
 			sprintf(filename, "halfcylinder-streaklines-%.2f.vtp", startTime);
-			polyData->Print(std::cout);
+			//polyData->Print(std::cout);
+
 			vtkNew<vtkXMLPolyDataWriter> writer;
 			writer->SetFileName((std::string(basePath) + filename).c_str());
 			writer->SetInputData(polyData);

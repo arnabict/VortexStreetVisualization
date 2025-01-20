@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
-
 #include "Magnitude.hpp"
 #include "Velocity.hpp"
 #include "Vorticity.hpp"
 #include "Particles.hpp"
 #include "Streaklines.hpp"
+#include "FeatureFlow.hpp"
 #include "LIC.hpp"
 #include "FTLE.hpp"
+#include <Windows.h>
 
 static const int num_time_steps = 151;
 
@@ -61,6 +62,32 @@ void ComputeStreaklines(const std::string& basePath) {
 		20);
 }
 
+void ComputeFeatureFlow(const std::string& basePath) {
+	for (int time = 0; time < num_time_steps; ++time) {
+		char filenameIn1[256];
+		char filenameIn2[256];
+		char filenameIn3[256];
+		char filenameOut[256];
+		sprintf(filenameIn1, "halfcylinder-%.2f.am", std::max(0, time - 1) * 0.1);
+		sprintf(filenameIn2, "halfcylinder-%.2f.am", time * 0.1);
+		sprintf(filenameIn3, "halfcylinder-%.2f.am", std::min(time + 1, num_time_steps - 1) * 0.1);
+		sprintf(filenameOut, "halfcylinder-featureflow-%.2f.am", time * 0.1);
+		int deltaSteps = 2;
+		if (time == 0 || time == num_time_steps - 1)
+			deltaSteps = 1;
+
+		vispro::FeatureFlow::Compute(
+			(basePath + filenameIn1).c_str(),
+			(basePath + filenameIn2).c_str(),
+			(basePath + filenameIn3).c_str(),
+			deltaSteps,
+			(basePath + filenameOut).c_str());
+
+		std::cout << "\rFeature Flow: " << (time + 1) << " / " << num_time_steps;
+	}
+	std::cout << std::endl;
+}
+
 void ComputeLIC(const std::string& basePath) {
 	// for each time step
 	for (int time = 0; time < num_time_steps; ++time) {
@@ -92,17 +119,25 @@ void ComputeFTLE(const std::string& basePath) {
 
 int main(int argc, char* argv[])
 {
+	AllocConsole();
+	freopen("conin$", "r", stdin);
+	freopen("conout$", "w", stdout);
+	freopen("conout$", "w", stderr);
+	printf("Debugging Window:\n");
+
 	if (argc < 2) {
 		// Pass the data base path to the data as command line argument!
 		// e.g., D:/halfcylinder3d-Re320_vti/
 		return -1;
 	}
 
-	/*ComputeVelocity(argv[1]);
-	ComputeMagnitude(argv[1]);
-	ComputeVorticity(argv[1]);
-	ComputeParticles(argv[1]);*/
-	ComputeStreaklines(argv[1]);
+	//Computation
+	//ComputeVelocity(argv[1]);
+	//ComputeMagnitude(argv[1]);
+	//ComputeVorticity(argv[1]);
+	//ComputeParticles(argv[1]);
+	//ComputeStreaklines(argv[1]);
+	ComputeFeatureFlow(argv[1]);
 	//ComputeLIC(argv[1]);
 	//ComputeFTLE(argv[1]);
 
